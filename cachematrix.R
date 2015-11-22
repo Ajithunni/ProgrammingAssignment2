@@ -1,15 +1,59 @@
-## Put comments here that give an overall description of what your
-## functions do
+## This function creates a special "matrix" object that can cache its inverse
+## This is achieved by creating a list that contains functions to
+## -- Set the value of matrix
+## -- Get the value of matrix
+## -- Set the value of inverse matrix
+## -- Ger the value of invese matrix
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(x = matrix())
+{
+  invM <- NULL
+  
+  #Set Function
+  set <- function(y)
+  {
+    
+  }
+  
+  #Get Function
+  get <- function() x
+  
+  #Set Inverse Function
+  setinverse <- function(inverseM) invM <<- inverseM
+  
+  # Get Inverse Function
+  getinverse <- function() invM
+  
+  #Return the list with Functions
+  list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
+  
+  
 }
 
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+## This function computes the inverse of the special "matrix" 
+## returned by makeCacheMatrix above. If the inverse has already 
+## been calculated (and the matrix has not changed), then cacheSolve 
+## should retrieve the inverse from the cache.
+cacheSolve <- function(x, ...)
+{
+  invM <- x$getinverse()
+  
+  if(!is.null(invM)) {
+    message("getting cached data.")
+    return(invM)
+  }
+  data <- x$get()
+  
+  invM <- solve(data)
+  
+  x$setinverse(invM)
+  
+  invM
 }
+
+##Run script
+#x = rbind(c(1, -.75), c(-.755, 1))
+#m = makeCacheMatrix(x)
+#cacheSolve(m)
+#cacheSolve(m)
+
